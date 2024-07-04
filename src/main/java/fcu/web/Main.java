@@ -1,10 +1,14 @@
 package fcu.web;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -15,7 +19,8 @@ public class Main {
         driver.get("https://www.vscinemas.com.tw/vsweb/film/index.aspx");
         System.out.println(driver.getTitle());
 
-        try{
+        try(FileWriter writer=new FileWriter("movie.csv");
+        CSVPrinter printer =new CSVPrinter(writer,CSVFormat.DEFAULT.withHeader("電影名稱", "英文名稱", "上映日期"))) {
 //        **
         List<WebElement> elements = driver.findElements(By.cssSelector(".movieList .infoArea"));
 
@@ -24,6 +29,9 @@ public class Main {
             WebElement nameElement = element.findElement(By.cssSelector("a"));
             WebElement engNameElement = element.findElement(By.cssSelector("h3"));
             WebElement startDateElement = element.findElement(By.cssSelector("time"));
+
+            printer.printRecord(nameElement.getText(), engNameElement.getText(), startDateElement.getText());
+
             System.out.print(nameElement.getText()+"\t");
             System.out.print(engNameElement.getText()+"\t");
             System.out.println(startDateElement.getText());
@@ -37,6 +45,9 @@ public class Main {
         }catch(NoSuchElementException e) {
          e.printStackTrace();
 
+        }
+        catch(IOException e) {
+            e.printStackTrace();
         }
         finally {
             driver.quit();
