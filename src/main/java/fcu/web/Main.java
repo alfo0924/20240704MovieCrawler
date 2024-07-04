@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args)
     {
         WebDriver driver = new ChromeDriver();
-
+        driver.get("https://www.vscinemas.com.tw/vsweb/film/index.aspx");
 
     }
 }
