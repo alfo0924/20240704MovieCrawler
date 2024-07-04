@@ -8,6 +8,7 @@ public class Main {
     {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.vscinemas.com.tw/vsweb/film/index.aspx");
+        System.out.println(driver.getTitle());
 
     }
 }
